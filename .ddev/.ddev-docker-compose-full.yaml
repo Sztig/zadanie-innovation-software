@@ -1,0 +1,225 @@
+name: ddev-zadanie-rek-innovation-software
+networks:
+    ddev_default:
+        external: true
+        name: ddev_default
+    default:
+        labels:
+            com.ddev.platform: ddev
+        name: ddev-zadanie-rek-innovation-software_default
+services:
+    db:
+        build:
+            args:
+                BASE_IMAGE: ddev/ddev-dbserver-mariadb-10.4:v1.22.7
+                gid: "1000"
+                uid: "1000"
+                username: sztig
+            context: /home/sztig/zadanie-rek-innovation-software/.ddev/.dbimageBuild
+            dockerfile: Dockerfile
+        cap_add:
+            - SYS_NICE
+        command: []
+        container_name: ddev-zadanie-rek-innovation-software-db
+        environment:
+            COLUMNS: "308"
+            DDEV_DATABASE: mariadb:10.4
+            DDEV_DATABASE_FAMILY: mysql
+            DDEV_HOSTNAME: zadanie-rek-innovation-software.ddev.site
+            DDEV_PHP_VERSION: "8.3"
+            DDEV_PRIMARY_URL: https://zadanie-rek-innovation-software.ddev.site
+            DDEV_PROJECT: zadanie-rek-innovation-software
+            DDEV_PROJECT_TYPE: php
+            DDEV_ROUTER_HTTP_PORT: "80"
+            DDEV_ROUTER_HTTPS_PORT: "443"
+            DDEV_SITENAME: zadanie-rek-innovation-software
+            DDEV_TLD: ddev.site
+            DOCKER_IP: 127.0.0.1
+            GOARCH: amd64
+            GOOS: linux
+            HOST_DOCKER_INTERNAL_IP: ""
+            IS_DDEV_PROJECT: "true"
+            LINES: "19"
+            MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/zadanie-rek-innovation-software-db/mysql_history
+            MYSQL_PWD: db
+            PGDATABASE: db
+            PGHOST: 127.0.0.1
+            PGPASSWORD: db
+            PGUSER: db
+            POSTGRES_DB: db
+            POSTGRES_PASSWORD: db
+            POSTGRES_USER: db
+            TZ: ""
+            USER: sztig
+        healthcheck:
+            interval: 1s
+            retries: 120
+            start_period: 2m0s
+            timeout: 1m10s
+        hostname: zadanie-rek-innovation-software-db
+        image: ddev/ddev-dbserver-mariadb-10.4:v1.22.7-zadanie-rek-innovation-software-built
+        labels:
+            com.ddev.app-type: php
+            com.ddev.approot: /home/sztig/zadanie-rek-innovation-software
+            com.ddev.platform: ddev
+            com.ddev.site-name: zadanie-rek-innovation-software
+        networks:
+            ddev_default: null
+            default: null
+        ports:
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 3306
+        restart: "no"
+        stop_grace_period: 1m0s
+        user: 1000:1000
+        volumes:
+            - source: database
+              target: /var/lib/mysql
+              type: volume
+              volume:
+                nocopy: true
+            - bind:
+                create_host_path: true
+              source: /home/sztig/zadanie-rek-innovation-software/.ddev
+              target: /mnt/ddev_config
+              type: bind
+            - bind:
+                create_host_path: true
+              source: /home/sztig/zadanie-rek-innovation-software/.ddev/db_snapshots
+              target: /mnt/snapshots
+              type: bind
+            - source: ddev-global-cache
+              target: /mnt/ddev-global-cache
+              type: volume
+              volume: {}
+        working_dir: /home/sztig
+    web:
+        build:
+            args:
+                BASE_IMAGE: ddev/ddev-webserver:v1.22.7
+                DDEV_PHP_VERSION: "8.3"
+                gid: "1000"
+                uid: "1000"
+                username: sztig
+            context: /home/sztig/zadanie-rek-innovation-software/.ddev/.webimageBuild
+            dockerfile: Dockerfile
+        cap_add:
+            - SYS_PTRACE
+        command:
+            - /pre-start.sh
+        container_name: ddev-zadanie-rek-innovation-software-web
+        environment:
+            COLUMNS: "308"
+            DDEV_COMPOSER_ROOT: /var/www/html
+            DDEV_DATABASE: mariadb:10.4
+            DDEV_DATABASE_FAMILY: mysql
+            DDEV_DOCROOT: public
+            DDEV_FILES_DIR: ""
+            DDEV_FILES_DIRS: ""
+            DDEV_HOSTNAME: zadanie-rek-innovation-software.ddev.site
+            DDEV_MUTAGEN_ENABLED: "false"
+            DDEV_PHP_VERSION: "8.3"
+            DDEV_PRIMARY_URL: https://zadanie-rek-innovation-software.ddev.site
+            DDEV_PROJECT: zadanie-rek-innovation-software
+            DDEV_PROJECT_TYPE: php
+            DDEV_ROUTER_HTTP_PORT: "80"
+            DDEV_ROUTER_HTTPS_PORT: "443"
+            DDEV_SITENAME: zadanie-rek-innovation-software
+            DDEV_TLD: ddev.site
+            DDEV_VERSION: v1.22.7
+            DDEV_WEB_ENTRYPOINT: /mnt/ddev_config/web-entrypoint.d
+            DDEV_WEBSERVER_TYPE: nginx-fpm
+            DDEV_XDEBUG_ENABLED: "false"
+            DEPLOY_NAME: local
+            DOCKER_IP: 127.0.0.1
+            DOCROOT: public
+            DRUSH_ALLOW_XDEBUG: "1"
+            DRUSH_OPTIONS_URI: https://zadanie-rek-innovation-software.ddev.site
+            GOARCH: amd64
+            GOOS: linux
+            HOST_DOCKER_INTERNAL_IP: ""
+            HTTP_EXPOSE: 80:80,8025:8025
+            HTTPS_EXPOSE: 443:80,8026:8025
+            IS_DDEV_PROJECT: "true"
+            LINES: "19"
+            MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/zadanie-rek-innovation-software-web/mysql_history
+            MYSQL_PWD: db
+            NODE_EXTRA_CA_CERTS: /mnt/ddev-global-cache/mkcert/rootCA.pem
+            PGDATABASE: db
+            PGHOST: db
+            PGPASSWORD: db
+            PGUSER: db
+            PHP_IDE_CONFIG: serverName=zadanie-rek-innovation-software.ddev.site
+            SSH_AUTH_SOCK: /home/.ssh-agent/socket
+            TZ: ""
+            USER: sztig
+            VIRTUAL_HOST: zadanie-rek-innovation-software.ddev.site
+            npm_config_cache: /mnt/ddev-global-cache/npm
+        external_links:
+            - ddev-router:zadanie-rek-innovation-software.ddev.site
+        extra_hosts:
+            - host.docker.internal=host-gateway
+        healthcheck:
+            interval: 1s
+            retries: 120
+            start_period: 2m0s
+            timeout: 1m10s
+        hostname: zadanie-rek-innovation-software-web
+        image: ddev/ddev-webserver:v1.22.7-zadanie-rek-innovation-software-built
+        labels:
+            com.ddev.app-type: php
+            com.ddev.approot: /home/sztig/zadanie-rek-innovation-software
+            com.ddev.platform: ddev
+            com.ddev.site-name: zadanie-rek-innovation-software
+        networks:
+            ddev_default: null
+            default: null
+        ports:
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 80
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 443
+        restart: "no"
+        user: 1000:1000
+        volumes:
+            - consistency: cached
+              source: ../
+              target: /var/www/html
+              type: bind
+            - bind:
+                create_host_path: true
+              read_only: true
+              source: /home/sztig/zadanie-rek-innovation-software/.ddev
+              target: /mnt/ddev_config
+              type: bind
+            - bind:
+                create_host_path: true
+              read_only: true
+              source: /home/sztig/zadanie-rek-innovation-software/.ddev/xhprof
+              target: /usr/local/bin/xhprof
+              type: bind
+            - source: ddev-global-cache
+              target: /mnt/ddev-global-cache
+              type: volume
+              volume: {}
+            - source: ddev-ssh-agent_socket_dir
+              target: /home/.ssh-agent
+              type: volume
+              volume: {}
+        working_dir: /var/www/html/
+volumes:
+    database:
+        external: true
+        name: zadanie-rek-innovation-software-mariadb
+    ddev-global-cache:
+        external: true
+        name: ddev-global-cache
+    ddev-ssh-agent_socket_dir:
+        external: true
+        name: ddev-ssh-agent_socket_dir

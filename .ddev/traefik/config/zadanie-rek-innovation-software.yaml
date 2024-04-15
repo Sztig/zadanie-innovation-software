@@ -1,0 +1,100 @@
+#ddev-generated
+
+http:
+  routers:
+    
+    
+    zadanie-rek-innovation-software-web-80-http:
+      
+      rule: HostRegexp(`zadanie-rek-innovation-software.ddev.site`)
+      
+      middlewares:
+        - autodetect
+      service: "zadanie-rek-innovation-software-web-80-http"
+      tls: false
+      entrypoints:
+        - http-80
+    
+    
+    zadanie-rek-innovation-software-web-8025-http:
+      
+      rule: HostRegexp(`zadanie-rek-innovation-software.ddev.site`)
+      
+      middlewares:
+        - autodetect
+      service: "zadanie-rek-innovation-software-web-8025-http"
+      tls: false
+      entrypoints:
+        - http-8025
+    
+    
+    
+    
+    
+    
+    zadanie-rek-innovation-software-web-80-https:
+      
+      rule: HostRegexp(`zadanie-rek-innovation-software.ddev.site`)
+      
+      middlewares:
+        - autodetect
+      service: "zadanie-rek-innovation-software-web-80-https"
+      
+      tls: true
+      
+      entrypoints:
+        - http-443
+    
+    
+    zadanie-rek-innovation-software-web-8025-https:
+      
+      rule: HostRegexp(`zadanie-rek-innovation-software.ddev.site`)
+      
+      middlewares:
+        - autodetect
+      service: "zadanie-rek-innovation-software-web-8025-https"
+      
+      tls: true
+      
+      entrypoints:
+        - http-8026
+    
+    
+
+  # autodetect won't be needed in Traefik 3 https://github.com/traefik/traefik/pull/9546
+  middlewares:
+    autodetect:
+      contentType:
+        autoDetect: false
+
+  services:
+    
+    zadanie-rek-innovation-software-web-80-http:
+      loadbalancer:
+        servers:
+          - url: http://ddev-zadanie-rek-innovation-software-web:80
+    
+    zadanie-rek-innovation-software-web-8025-http:
+      loadbalancer:
+        servers:
+          - url: http://ddev-zadanie-rek-innovation-software-web:8025
+    
+    zadanie-rek-innovation-software-web-80-https:
+    
+      loadbalancer:
+        servers:
+          - url: http://ddev-zadanie-rek-innovation-software-web:80
+    
+    zadanie-rek-innovation-software-web-8025-https:
+    
+      loadbalancer:
+        servers:
+          - url: http://ddev-zadanie-rek-innovation-software-web:8025
+    
+
+
+tls:
+  certificates:
+    - certFile: /mnt/ddev-global-cache/traefik/certs/zadanie-rek-innovation-software.crt
+      keyFile: /mnt/ddev-global-cache/traefik/certs/zadanie-rek-innovation-software.key
+
