@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Currency Exchange Rates{% endblock %}
+
+{% block body %}
+    <h1>Currency Exchange Rates</h1>
+
+    <form action="{{ path('app_currency_update') }}" method="post">
+        <button type="submit">Update Exchange Rates</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Currency</th>
+            <th>Code</th>
+            <th>Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for currency in currencies %}
+            <tr>
+                <td>{{ currency.name }}</td>
+                <td>{{ currency.currencyCode }}</td>
+                <td>{{ currency.exchangeRate }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
