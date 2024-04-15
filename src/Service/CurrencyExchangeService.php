@@ -42,7 +42,7 @@ class CurrencyExchangeService
         return $response->toArray();
     }
 
-    private function updateStoredCurrencies(array $currencyData)
+    private function updateStoredCurrencies(array $currencyData): void
     {
         foreach ($currencyData[0]['rates'] as $exchangeRate) {
             $currency = $this->entityManager->getRepository(Currency::class)->findOneBy([
